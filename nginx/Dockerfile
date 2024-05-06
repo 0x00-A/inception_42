@@ -9,14 +9,18 @@ RUN apk add nginx openssl vim curl
 #RUN adduser -S -G nginx nginx
 #USER nginx
 
-# ssl
-RUN mkdir /etc/nginx/ssl
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-	 -keyout /etc/nginx/ssl/nginx-selfsigned.key -out \
-	 /etc/nginx/ssl/nginx-selfsigned.crt -subj "/C=/ST=/L=/O=/OU=/CN="
+WORKDIR /etc/nginx
 
-RUN rm /etc/nginx/http.d/default.conf
-COPY ./conf/default.conf /etc/nginx/http.d
+# ssl
+RUN mkdir ssl
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+	 -keyout ./ssl/nginx-selfsigned.key -out \
+	 ./ssl/nginx-selfsigned.crt -subj "/C=/ST=/L=/O=/OU=/CN="
+
+EXPOSE 443
+
+RUN rm http.d/default.conf
+COPY ./conf/default.conf ./http.d
 
 CMD ["nginx", "-g", "daemon off;"]
 
