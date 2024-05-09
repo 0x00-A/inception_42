@@ -1,0 +1,9 @@
+
+services:
+  wp:
+    image: wordpress:cli
+    environment:
+
+  ng:
+
+  db:
