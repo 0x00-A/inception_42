@@ -4,6 +4,8 @@ services:
 
   mariadb:
     build: ./mariadb
+    env_file:
+      - .env
     volumes:
       - db_volume:/var/lib/mysql
   
@@ -13,13 +15,21 @@ services:
     build:
       context: ./wordpress
       dockerfile: Dockerfile
+    environment:
+      - MYSQL_HOST=mariadb
+      - WP_PATH=/srv/www/wordpress
+    env_file:
+      - .env
+    volumes:
+      - wp_volume:/srv/www/wordpress
+
 
   nginx:
     depends_on:
       - wordpress
     build: ./nginx
     ports:
-      - 444:443
+      - 443:443
     volumes:
       - wp_volume:/srv/www/wordpress
 

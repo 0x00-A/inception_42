@@ -1,27 +1,11 @@
 #!/bin/sh
 
-MYSQL_ROOT_PASSWORD='root'
-MYSQL_USER='abdelatif'
-MYSQL_PASSWORD='secure123'
-MYSQL_DATABASE='wp_dp'
-
 if [ -d /var/lib/mysql/$MYSQL_DATABASE ]; then
 	echo "Database exist"
 else
 
 service mariadb start
 
-# mysql_secure_installation <<E
-
-# y
-# $MYSQL_TMP_PASSWORD
-# $MYSQL_TMP_PASSWORD
-# y
-# y
-# y
-# y
-# E
-# echo "startin..."
 sleep 1
 # set root password
 mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
@@ -43,9 +27,10 @@ mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.
 
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
 
+killall mariadbd
+
 fi
 
-killall mariadbd
 sleep 1
 
 exec "$@"

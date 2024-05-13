@@ -22,5 +22,7 @@ EXPOSE 444
 RUN rm http.d/default.conf
 COPY ./conf/default.conf ./http.d
 
+# RUN chown nginx /srv/www/wordpress
+
 CMD ["nginx", "-g", "daemon off;"]
 
