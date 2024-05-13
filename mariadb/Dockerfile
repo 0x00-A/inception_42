@@ -6,7 +6,7 @@ RUN apt update
 
 # Install MariaDB server
 RUN apt install -y mariadb-server
-RUN apt -y install systemctl
+# RUN apt -y install systemctl
 
 
 # Expose the MariaDB port
@@ -15,9 +15,9 @@ EXPOSE 3306
 # Start MariaDB service
 #CMD ["service", "mysql", "start"]
 
-# COPY s.sh /usr/local/bin
+COPY mariadb-entrypoint.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/mariadb-entrypoint.sh
 
-# RUN chmod +x /usr/local/bin/s.sh
 
 # RUN mkdir -p /var/lib/mysql/
 # RUN chown mysql /var/lib/mysql/
@@ -25,10 +25,10 @@ EXPOSE 3306
 RUN mkdir /run/mysqld
 RUN chown mysql /run/mysqld
 
-USER mysql
+# USER mysql
 
-# ENTRYPOINT [ "s.sh" ]
+ENTRYPOINT [ "mariadb-entrypoint.sh" ]
 
 # USER mysql
 
-CMD [ "mariadbd", "--bind-address=0.0.0.0" ]
+CMD [ "mariadbd", "-umysql", "--bind-address=0.0.0.0" ]

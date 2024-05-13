@@ -1,9 +1,28 @@
 name: myapp
 
 services:
+
+  mariadb:
+    build: ./mariadb
+    volumes:
+      - db_volume:/var/lib/mysql
+  
+  wordpress:
+    depends_on:
+      - mariadb
+    build:
+      context: ./wordpress
+      dockerfile: Dockerfile
+
   nginx:
+    depends_on:
+      - wordpress
     build: ./nginx
     ports:
-      - 443:443
+      - 444:443
     volumes:
-      - ./html:/var/www/localhost/htdocs
+      - wp_volume:/srv/www/wordpress
+
+volumes:
+  wp_volume:
+  db_volume:
