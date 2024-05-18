@@ -1,0 +1,74 @@
+version: '3.6'
+name: app
+
+services:
+  redis:
+    build: ./requirements/bonus/redis
+    # ports:
+    #   - '6379:6379'
+    restart: always
+    # expose:
+    #   - '6379'
+
+  mariadb:
+    build: ./requirements/mariadb
+    env_file:
+      - .env
+    volumes:
+      - db_volume:/var/lib/mysql
+  
+  wordpress:
+    depends_on:
+      - mariadb
+      - redis
+    build: ./requirements/wordpress
+    environment:
+      - MYSQL_HOST=mariadb
+      - WP_PATH=/srv/www/wordpress
+      - WP_TITLE=inception
+      - WP_USER_ROLE=editor
+      
+    env_file:
+      - .env
+    volumes:
+      - wp_volume:/srv/www/wordpress
+
+
+  nginx:
+    depends_on:
+      - wordpress
+    build: ./requirements/nginx
+    ports:
+      - 443:443
+    volumes:
+      - wp_volume:/srv/www/wordpress
+
+  # ftp:
+  #   depends_on:
+  #     - wordpress
+  #   build: ./bonus/ftp
+  #   ports:
+  #     - 0:0
+  #   volumes:
+  #     - wp_volume:/srv/www/wordpress
+
+  ftp:
+      image: fauria/vsftpd
+      container_name: ftp_server
+      restart: always
+      ports:
+        - "21:21"
+        # - "21000-21010:21000-21010"
+        # - "21100:21100"
+      environment:
+        FTP_USER: ftpuser
+        FTP_PASS: ftppass
+        PASV_ADDRESS: "0.0.0.0"
+        # PASV_MIN_PORT: 21000
+        # PASV_MAX_PORT: 21010
+      volumes:
+        - wp_volume:/srv/www/wordpress
+
+volumes:
+  wp_volume:
+  db_volume:
