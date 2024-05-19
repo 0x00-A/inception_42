@@ -2,7 +2,7 @@ FROM debian:bookworm
 
 RUN apt update
 
-RUN apt install -y vim curl php8.2-fpm php8.2-mysql inetutils-ping zip
+RUN apt install -y curl php8.2-fpm php8.2-mysql mariadb-client
 
 # download wordpress
 RUN mkdir -p /srv/www

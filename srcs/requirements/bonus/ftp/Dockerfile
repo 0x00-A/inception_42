@@ -2,6 +2,6 @@ FROM debian:bookworm
 
 RUN apt update
 
-RUN apt -y install filezilla
+RUN apt -y install 
 
-CMD [ "filezilla" ]
+CMD [ "" ]

@@ -1,18 +1,11 @@
 #!/bin/bash
 
-while true; do
-    if ping -c 1 "$MYSQL_HOST" &> /dev/null; then
-        echo "MariaDB is reachable!"
-        break
-    else
-        echo "Waiting for MariaDB..."
-        sleep 2
-    fi
+# Wait for MariaDB to be ready
+until mysqladmin ping -hmariadb --silent; do
+    sleep 2
 done
 
-sleep 3
 echo "MariaDB is up!"
-
 
 if [ -f $WP_PATH/wp-config.php ]; then
 

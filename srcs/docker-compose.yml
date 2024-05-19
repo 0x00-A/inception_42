@@ -52,22 +52,22 @@ services:
   #   volumes:
   #     - wp_volume:/srv/www/wordpress
 
-  ftp:
-      image: fauria/vsftpd
-      container_name: ftp_server
-      restart: always
-      ports:
-        - "21:21"
-        # - "21000-21010:21000-21010"
-        # - "21100:21100"
-      environment:
-        FTP_USER: ftpuser
-        FTP_PASS: ftppass
-        PASV_ADDRESS: "0.0.0.0"
-        # PASV_MIN_PORT: 21000
-        # PASV_MAX_PORT: 21010
-      volumes:
-        - wp_volume:/srv/www/wordpress
+  # ftp:
+  #     image: fauria/vsftpd
+  #     container_name: ftp_server
+  #     restart: always
+  #     ports:
+  #       - "21:21"
+  #       # - "21000-21010:21000-21010"
+  #       # - "21100:21100"
+  #     environment:
+  #       FTP_USER: ftpuser
+  #       FTP_PASS: ftppass
+  #       PASV_ADDRESS: "0.0.0.0"
+  #       # PASV_MIN_PORT: 21000
+  #       # PASV_MAX_PORT: 21010
+  #     volumes:
+  #       - wp_volume:/srv/www/wordpress
 
 volumes:
   wp_volume:
