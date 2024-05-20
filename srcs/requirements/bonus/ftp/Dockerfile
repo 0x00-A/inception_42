@@ -1,7 +1,16 @@
 FROM debian:bookworm
 
 RUN apt update
+RUN apt -y install vsftpd vim
 
-RUN apt -y install 
+# RUN mkdir /etc/vsftpd
 
-CMD [ "" ]
+RUN rm /etc/vsftpd.conf
+COPY vsftpd.conf /etc
+
+# COPY ./tools/ftp-entryponit.sh /usr/local/bin
+# RUN chmod +x /usr/local/bin/ftp-entryponit.sh
+
+# ENTRYPOINT [ "ftp-entryponit.sh" ]
+
+CMD [ "vsftpd" ]
