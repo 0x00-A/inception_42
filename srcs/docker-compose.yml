@@ -49,7 +49,11 @@ services:
     build: ./requirements/bonus/ftp
     ports:
       - 21:21
+      # - 20:20
+      # - 1024-65535:1024-65535/tcp
       - "21000-21010:21000-21010"
+    env_file:
+      - .env
     volumes:
       - wp_volume:/srv/ftp
 

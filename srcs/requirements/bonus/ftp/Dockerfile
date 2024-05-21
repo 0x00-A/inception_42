@@ -3,14 +3,28 @@ FROM debian:bookworm
 RUN apt update
 RUN apt -y install vsftpd vim
 
-# RUN mkdir /etc/vsftpd
+COPY tools/ftp-entrypoint.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/ftp-entrypoint.sh
 
-RUN rm /etc/vsftpd.conf
-COPY vsftpd.conf /etc
 
-# COPY ./tools/ftp-entryponit.sh /usr/local/bin
-# RUN chmod +x /usr/local/bin/ftp-entryponit.sh
+COPY vsftpd.conf /etc/vsftpd.conf
+EXPOSE 21
 
-# ENTRYPOINT [ "ftp-entryponit.sh" ]
+# user
+# RUN useradd -M ftpuser && echo "ftpuser:password" | chpasswd
 
-CMD [ "vsftpd" ]
+# RUN mkdir -p /home/ftpuser/ftp
+# RUN echo "hello" > /home/ftpuser/ftp/hello.txt
+# RUN chown -R ftpuser:ftpuser /home/ftpuser/ftp
+
+# RUN mkdir -p /var/run/vsftpd/empty
+# RUN chmod 755 /var/run/vsftpd/empty
+
+# RUN mkdir -p /var/ftp && chown ftp:ftp /var/ftp
+
+# RUN echo "ftpuser" >> /etc/vsftpd.userlist
+
+
+ENTRYPOINT [ "ftp-entrypoint.sh" ]
+
+CMD /usr/sbin/vsftpd /etc/vsftpd.conf
