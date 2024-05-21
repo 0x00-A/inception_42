@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:bookworm-slim
 
 RUN apt update
 
@@ -9,7 +9,7 @@ RUN mkdir -p /srv/www
 RUN chown -R www-data: /srv/www
 WORKDIR /srv/www
 RUN curl https://wordpress.org/latest.tar.gz | tar zx
-RUN chown -R www-data: /srv/www/wordpress
+# RUN chown -R www-data: /srv/www/wordpress
 
 # wp cli
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar

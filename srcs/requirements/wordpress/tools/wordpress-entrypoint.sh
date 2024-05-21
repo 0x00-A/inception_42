@@ -27,11 +27,15 @@ else
     wp config set WP_CACHE true --add --allow-root --path=$WP_PATH
 
     # problem Filesystem not writeable solved with this
-    wp config set FS_METHOD direct --add --allow-root --path=$WP_PATH
+    # wp config set FS_METHOD direct --add --allow-root --path=$WP_PATH
 
     wp plugin install --allow-root redis-cache --activate --path=$WP_PATH
 
-    chown www-data: $WP_PATH/wp-config.php
+    # chown www-data: $WP_PATH/wp-config.php
+    groupadd sharedgroup && usermod -a -G sharedgroup www-data
+    
+    chown -R www-data:sharedgroup /srv/www/wordpress
+    chmod -R 775 /srv/www/wordpress
 
 fi
 

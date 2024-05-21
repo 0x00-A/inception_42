@@ -15,7 +15,7 @@ all: up
 
 #--project-name
 up:
-	docker-compose --project-directory ./srcs up
+	docker-compose --project-directory ./srcs --env-file ./srcs/.env up
 
 down:
 	docker-compose --project-directory ./srcs down

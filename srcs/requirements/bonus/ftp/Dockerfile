@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:bookworm-slim
 
 RUN apt update
 RUN apt -y install vsftpd vim
@@ -7,7 +7,7 @@ COPY tools/ftp-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/ftp-entrypoint.sh
 
 
-COPY vsftpd.conf /etc/vsftpd.conf
+COPY conf/vsftpd.conf /etc/vsftpd/vsftpd.conf
 EXPOSE 21
 
 # user
@@ -27,4 +27,4 @@ EXPOSE 21
 
 ENTRYPOINT [ "ftp-entrypoint.sh" ]
 
-CMD /usr/sbin/vsftpd /etc/vsftpd.conf
+CMD /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf

@@ -1,5 +1,5 @@
 # Use the Debian image from Docker Hub
-FROM debian:bookworm
+FROM debian:bookworm-slim
 
 # Update the package list
 RUN apt update

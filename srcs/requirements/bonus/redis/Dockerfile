@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:bookworm-slim
 
 RUN apt update
 RUN apt -y install redis-server php8.2-redis
