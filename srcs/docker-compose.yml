@@ -58,8 +58,8 @@ services:
     build: ./requirements/nginx
     ports:
       - 443:443
-      - 80:80
-      - 9090:8080
+      # - 80:80
+      - 7000:8080
     restart: always
     volumes:
       - wp_volume:/srv/www/wordpress
@@ -94,18 +94,28 @@ services:
 
 
 
-  prometheus:
-    image: prom/prometheus
+  # prometheus:
+  #   image: prom/prometheus
+  #   restart: always
+  #   ports:
+  #     - "9000:9090"
+  #   volumes:
+  #     - ./requirements/bonus/prometheus:/etc/prometheus
+  #   command:
+  #     - '--config.file=/etc/prometheus/prometheus.yml'
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
     restart: always
     ports:
-      - "9000:9090"
+      - "9001:9000"
     volumes:
-      - ./requirements/bonus/prometheus:/etc/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
 
 volumes:
   wp_volume:
   db_volume:
   adminer_volume:
+  portainer_data:

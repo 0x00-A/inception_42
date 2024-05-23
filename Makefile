@@ -2,6 +2,8 @@
 MARIADB_VOLUME=db_volume
 WORDPRESS_VOLUME=wp_volume
 ADMINER_VOLUME=adminer_volume
+PORTAINER_VOLUME=portainer_data
+
 DOCKER_NETWORK=default
 
 APP_NAME=app
@@ -13,7 +15,7 @@ REDIS_IMAGE=redis
 FTP_IMAGE=ftp
 STATIC_WEBSITE_IMAGE=static_website
 ADMINER_IMAGE=adminer
-EXTRA_SERVICE_IMAGE=prometheus
+EXTRA_SERVICE_IMAGE=portainer
 
 all: up
 
@@ -38,3 +40,4 @@ clean:
 	docker volume rm $(APP_NAME)_$(MARIADB_VOLUME) || true
 	docker volume rm $(APP_NAME)_$(WORDPRESS_VOLUME) || true
 	docker volume rm $(APP_NAME)_$(ADMINER_VOLUME) || true
+	docker volume rm $(APP_NAME)_$(PORTAINER_VOLUME) || true
