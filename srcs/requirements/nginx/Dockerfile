@@ -1,13 +1,7 @@
 FROM debian:bookworm-slim
 
-# update and install utils
 RUN apt update
 RUN apt install -y nginx openssl vim curl
-
-# setting the user
-#RUN addgroup nginx
-#RUN adduser -S -G nginx nginx
-#USER nginx
 
 WORKDIR /etc/nginx
 
@@ -20,10 +14,7 @@ WORKDIR /etc/nginx
 
 EXPOSE 443
 
-# RUN rm http.d/default.conf
 COPY ./conf/nginx.conf .
-
-# RUN chown nginx /srv/www/wordpress
 
 CMD ["nginx", "-g", "daemon off;"]
 
