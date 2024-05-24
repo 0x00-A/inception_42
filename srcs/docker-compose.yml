@@ -27,8 +27,10 @@ services:
 
   wordpress:
     depends_on:
-      - mariadb
-      - redis
+      mariadb:
+        condition: service_started
+      redis:
+        condition: service_started
     build: ./requirements/wordpress
     environment:
       - MYSQL_HOST=mariadb
@@ -43,7 +45,8 @@ services:
 
   adminer:
     depends_on:
-      - wordpress
+      wordpress:
+        condition: service_started
     build: ./requirements/bonus/adminer
     ports:
       - 8080:8080
@@ -53,8 +56,10 @@ services:
 
   nginx:
     depends_on:
-      - wordpress
-      - adminer
+      wordpress:
+        condition: service_started
+      adminer:
+        condition: service_started
     build: ./requirements/nginx
     ports:
       - 443:443
@@ -70,7 +75,8 @@ services:
 
   ftp:
     depends_on:
-      - wordpress
+      wordpress:
+        condition: service_started
     build: ./requirements/bonus/ftp
     ports:
       - 21:21

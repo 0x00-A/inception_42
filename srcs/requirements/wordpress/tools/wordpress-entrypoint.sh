@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# Wait for MariaDB to be ready
+#Wait for MariaDB
 until mysqladmin ping -hmariadb --silent; do
     sleep 2
 done
-
 echo "MariaDB is up!"
 
 if [ -f $WP_PATH/wp-config.php ]; then
