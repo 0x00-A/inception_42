@@ -1,13 +1,8 @@
-FROM debian:bookworm-slim
+FROM debian:bullseye
 
-ENV PHP_VERSION 8.2
+ENV PHP_VERSION 7.4
 
 RUN apt update
 RUN apt -y install redis-server php${PHP_VERSION}-redis
-
-# COPY ./tools/redis-entrypoint.sh /usr/local/bin
-# RUN chmod +x /usr/local/bin/redis-entrypoint.sh
-
-# ENTRYPOINT [ "redis-entrypoint.sh" ]
 
 CMD [ "redis-server", "--protected-mode no" ]

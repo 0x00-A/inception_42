@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:bullseye
 
 RUN apt update
 RUN apt install -y mariadb-server
@@ -7,7 +7,7 @@ COPY ./tools/mariadb-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/mariadb-entrypoint.sh
 
 RUN mkdir /run/mysqld
-RUN chown mysql /run/mysqld
+RUN chown mysql: /run/mysqld
 
 ENTRYPOINT [ "mariadb-entrypoint.sh" ]
 

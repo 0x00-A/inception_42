@@ -1,7 +1,7 @@
-FROM debian:bookworm-slim
+FROM debian:bullseye
 
 RUN apt update
-RUN apt install -y nginx openssl vim curl
+RUN apt install -y nginx openssl
 
 WORKDIR /etc/nginx
 

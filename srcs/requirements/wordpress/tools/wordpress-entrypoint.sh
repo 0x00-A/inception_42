@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/sh
+
+PHP_VERSION=7.4
 
 #Wait for MariaDB
 until mysqladmin ping -hmariadb --silent; do
@@ -29,23 +31,11 @@ else
     # wp config set FS_METHOD direct --add --allow-root --path=$WP_PATH
 
     wp plugin install --allow-root redis-cache --activate --path=$WP_PATH
-
-    # chown www-data: $WP_PATH/wp-config.php
-    groupadd sharedgroup && usermod -a -G sharedgroup www-data
     
-    chown -R www-data:sharedgroup /srv/www/wordpress
+    chown -R www-data: /srv/www/wordpress
     chmod -R 775 /srv/www/wordpress
 
 fi
-
-sed -i '/^listen = /s/.*/listen = wordpress:9000/' /etc/php/8.2/fpm/pool.d/www.conf
-
-# echo "define('WP_REDIS_HOST', 'redis');
-# define('WP_REDIS_PORT', '6379');
-# " >> $WP_PATH/wp-config.php
-
-# sed -i "2 i\define('WP_REDIS_HOST', 'redis');" $WP_PATH/wp-config.php
-# sed -i "3 i\define('WP_REDIS_PORT', '6379');" $WP_PATH/wp-config.php
 
 wp redis enable --allow-root --path=$WP_PATH
 

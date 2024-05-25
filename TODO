@@ -1,9 +1,11 @@
 [ ] volumes
-[ ] network
-[ ] tags
-[ ] app name and images name
-[ ] portainer user
+[x] network
+[-] tags
+[-] app name and images name
+[x] portainer user
 [ ] sertificates?
 [ ] static website
 [ ] vm set up
-[ ] depends on condition
+[x] depends on condition
+[x] makefile
+[ ] add .env to gitignore

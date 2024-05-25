@@ -1,29 +1,26 @@
-version: '3.6'
-name: app
-
 services:
-
-
-
   redis:
     build: ./requirements/bonus/redis
+    container_name: redis
     restart: always
-
+    networks: 
+      - inception_net
+    image: redis:v1.0
 
   mariadb:
     build: ./requirements/mariadb
-    # env_file:
-    #   - .env
+    container_name: mariadb
     restart: always
+    networks: 
+      - inception_net
     environment:
       - MYSQL_DATABASE=$MYSQL_DATABASE
       - MYSQL_USER=$MYSQL_USER
       - MYSQL_PASSWORD=$MYSQL_PASSWORD
       - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
     volumes:
-      - db_volume:/var/lib/mysql
-  
-
+      - db_data:/var/lib/mysql
+    image: mariadb:v1.0
 
   wordpress:
     depends_on:
@@ -32,27 +29,42 @@ services:
       redis:
         condition: service_started
     build: ./requirements/wordpress
+    container_name: wordpress
     environment:
-      - MYSQL_HOST=mariadb
-      - WP_PATH=/srv/www/wordpress
-      - WP_TITLE=inception
-      - WP_USER_ROLE=editor
-    env_file:
-      - .env
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+      - MYSQL_USER=$MYSQL_USER
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+      - MYSQL_HOST=$MYSQL_HOST
+      - WP_PATH=$WP_PATH
+      - WP_TITLE=$WP_TITLE
+      - WP_USER_ROLE=$WP_USER_ROLE
+      - WP_USER=$WP_USER
+      - WP_USER_PASSWORD=$WP_USER_PASSWORD
+      - WP_USER_MAIL=$WP_USER_MAIL
+      - WP_ADMIN=$WP_ADMIN
+      - WP_ADMIN_PASSWORD=$WP_ADMIN_PASSWORD
+      - WP_ADMIN_EMAIL=$WP_ADMIN_EMAIL
+      - DOMAIN_NAME=$DOMAIN_NAME
     restart: always
+    networks: 
+      - inception_net
     volumes:
-      - wp_volume:/srv/www/wordpress
+      - wp_data:/srv/www/wordpress
+    image: wordpress:v1.0
 
   adminer:
     depends_on:
       wordpress:
         condition: service_started
     build: ./requirements/bonus/adminer
-    ports:
-      - 8080:8080
+    container_name: adminer
     volumes:
-      - adminer_volume:/adminer
+      - adminer_data:/adminer
     restart: always
+    networks: 
+      - inception_net
+    image: adminer:v1.0
 
   nginx:
     depends_on:
@@ -61,68 +73,84 @@ services:
       adminer:
         condition: service_started
     build: ./requirements/nginx
+    container_name: nginx
     ports:
       - 443:443
-      # - 80:80
-      - 7000:8080
+      - 7000:7000
     restart: always
+    networks: 
+      - inception_net
     volumes:
-      - wp_volume:/srv/www/wordpress
-      - adminer_volume:/adminer
+      - wp_data:/srv/www/wordpress
+      - adminer_data:/adminer
       - $CERTS_:/etc/nginx/ssl:ro
-
-
+    image: nginx:v1.0
 
   ftp:
     depends_on:
       wordpress:
         condition: service_started
     build: ./requirements/bonus/ftp
+    container_name: ftp
     ports:
       - 21:21
-      # - 20:20
-      # - 1024-65535:1024-65535/tcp
       - "21000-21010:21000-21010"
     restart: always
+    networks: 
+      - inception_net
     environment:
       - FTP_USER=$FTP_USER
       - FTP_PASS=$FTP_PASS
     volumes:
-      - wp_volume:/srv/ftp
-      - $CERTS_:/etc/vsftpd/ssl:ro
+      - wp_data:/srv/ftp
+      # - $CERTS_:/etc/vsftpd/ssl:ro
+    image: ftp:v1.0
 
-
-  static_website:
-    build: ./requirements/bonus/static_website
+  website:
+    build: ./requirements/bonus/website
+    container_name: website
     ports:
       - 81:80
     restart: always
-
-
-
-  # prometheus:
-  #   image: prom/prometheus
-  #   restart: always
-  #   ports:
-  #     - "9000:9090"
-  #   volumes:
-  #     - ./requirements/bonus/prometheus:/etc/prometheus
-  #   command:
-  #     - '--config.file=/etc/prometheus/prometheus.yml'
+    networks: 
+      - inception_net
+    image: website:v1.0
 
   portainer:
     build: ./requirements/bonus/portainer
     container_name: portainer
     restart: always
+    networks: 
+      - inception_net
     ports:
       - "9000:9000"
-      # - "9443:9443"
+      - "9443:9443"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    image: portainer:v1.0
 
 volumes:
-  wp_volume:
-  db_volume:
-  adminer_volume:
+  wp_data:
+    # driver_opts:
+    #   type: none
+    #   o: bind
+    #   device: /home/${USER}/data
+  db_data:
+    # driver_opts:
+      # type: none
+      # o: bind
+      # device: /home/${USER}/data/
+  adminer_data:
+    # driver_opts:
+      # type: none
+      # o: bind
+      # device: /home/${USER}/data/
   portainer_data:
+    # driver_opts:
+      # type: none
+      # o: bind
+      # device: /home/${USER}/data/
+
+networks:
+  inception_net:
