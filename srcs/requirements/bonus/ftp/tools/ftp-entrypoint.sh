@@ -5,7 +5,7 @@ useradd -m $FTP_USER
 echo "$FTP_USER:$FTP_PASS" | chpasswd
 
 # Add the user to list of users that are allowed to log in
-echo "$FTP_USER" > /etc/vsftpd/vsftpd.userlist
+# echo "$FTP_USER" > /etc/vsftpd/vsftpd.userlist
 
 # directory for secure_chroot
 mkdir -p /var/run/vsftpd/empty

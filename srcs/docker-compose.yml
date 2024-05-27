@@ -132,25 +132,25 @@ services:
 
 volumes:
   wp_data:
-    # driver_opts:
-    #   type: none
-    #   o: bind
-    #   device: /home/${USER}/data
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/wordpress
   db_data:
-    # driver_opts:
-      # type: none
-      # o: bind
-      # device: /home/${USER}/data/
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/mariadb
   adminer_data:
-    # driver_opts:
-      # type: none
-      # o: bind
-      # device: /home/${USER}/data/
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/adminer
   portainer_data:
-    # driver_opts:
-      # type: none
-      # o: bind
-      # device: /home/${USER}/data/
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/portainer
 
 networks:
   inception_net:
