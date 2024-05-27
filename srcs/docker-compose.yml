@@ -74,6 +74,8 @@ services:
         condition: service_started
     build: ./requirements/nginx
     container_name: nginx
+    environment:
+      - DOMAIN_NAME=$DOMAIN_NAME
     ports:
       - 443:443
       - 7000:7000
@@ -83,7 +85,6 @@ services:
     volumes:
       - wp_data:/srv/www/wordpress
       - adminer_data:/adminer
-      - $CERTS_:/etc/nginx/ssl:ro
     image: nginx:v1.0
 
   ftp:
@@ -103,14 +104,13 @@ services:
       - FTP_PASS=$FTP_PASS
     volumes:
       - wp_data:/srv/ftp
-      # - $CERTS_:/etc/vsftpd/ssl:ro
     image: ftp:v1.0
 
   website:
     build: ./requirements/bonus/website
     container_name: website
     ports:
-      - 81:80
+      - 3000:80
     restart: always
     networks: 
       - inception_net

@@ -1,5 +1,1 @@
 # srcs/.env
-
-# Ignore certificate files
-# srcs/certificates/*.crt
-# srcs/certificates/*.key

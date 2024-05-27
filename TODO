@@ -9,3 +9,4 @@
 [x] depends on condition
 [x] makefile
 [ ] add .env to gitignore
+[ ] websit nginx conf and server_name
