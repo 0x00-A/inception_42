@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
-RUN apt update
-RUN apt -y install vsftpd
+RUN apt update \
+&& apt -y install vsftpd
 
 COPY tools/ftp-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/ftp-entrypoint.sh

@@ -6,7 +6,7 @@ else
 
 service mariadb start
 
-sleep 1
+sleep 2
 # set root password
 mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
 # remove anonymous user

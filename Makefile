@@ -1,8 +1,3 @@
-
-# PROJECT_NAME=app
-
-#--project-name
-
 all: up
 
 clean:
